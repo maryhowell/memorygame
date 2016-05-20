@@ -4,13 +4,21 @@ legend = [
   "a", "b", "c",
   "d", "e", "f"
 ]
+done = false
 
 def display_the_board user_board
+  puts
   puts user_board.values_at("a", "b", "c").join " "
   puts user_board.values_at("d", "e", "f").join " "
 end
 
-def key legend
+def display_temp_board user_board, answeres, pair, legend
+  user_board[pair.first] = answeres[pair.first]
+  user_board[pair.last] = answeres[pair.last]
+  display_the_board user_board
+end
+
+def key legend, answeres
   Hash[legend.zip(answeres)]
 end
 
@@ -35,10 +43,19 @@ def display_the_legend legend
 end
 
 def answeres
+  answeres =
   [
   1, 2, 3,
   1, 2, 3
   ]
+  # answeres.shuffle
+end
+
+def show_board
+  if #any if corret
+    
+  end
+  display_the_board
 end
 
 def user_board legend
@@ -50,6 +67,32 @@ def user_board legend
   Hash[legend.zip(board)]
 end
 
+def update_board_if_correct user_board, answeres, pair, legend
+  if answeres[pair.first] == answeres[pair.last]
+  user_board[pair.first] = answeres[pair.first]
+  user_board[pair.last] = answeres[pair.last]
+  # display_the_board user_board
+  end
+  user_board
+end
+
+def win
+  if
+
+
+  end
+end
+
+
+def play_again?
+  puts "Would you like to play again y or n?"
+  input = gets.chomp
+  if input == "n"
+    puts "thanks for playing"
+    done = true
+  end
+end
+
 user_board = user_board(legend)
 
 puts "Welcome to Memory:"
@@ -58,6 +101,10 @@ puts "Welcome to Memory:"
 until input == "quit"
   display_the_board(user_board)
   display_the_legend(legend)
-  choose_items
+  pair = choose_items
+  temp_board = user_board.clone
+  display_temp_board(temp_board, key(legend, answeres), pair, legend)
+  user_board = update_board_if_correct(user_board, key(legend, answeres), pair, legend)
 
+  # play_again?
 end
