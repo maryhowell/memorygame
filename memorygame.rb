@@ -1,5 +1,6 @@
 require "pry"
 input = ""
+done = false
 legend = [
   "a", "b", "c",
   "d", "e", "f"
@@ -12,14 +13,14 @@ def display_the_board user_board
   puts user_board.values_at("d", "e", "f").join " "
 end
 
-def display_temp_board user_board, answeres, pair, legend
-  user_board[pair.first] = answeres[pair.first]
-  user_board[pair.last] = answeres[pair.last]
+def display_temp_board user_board, answers, pair, legend
+  user_board[pair.first] = answers[pair.first]
+  user_board[pair.last] = answers[pair.last]
   display_the_board user_board
 end
 
-def key legend, answeres
-  Hash[legend.zip(answeres)]
+def key legend, answers
+  Hash[legend.zip(answers)]
 end
 
 def choose_items
@@ -42,20 +43,13 @@ def display_the_legend legend
   puts legend.values_at(3, 4, 5).join " "
 end
 
-def answeres
-  answeres =
+def answers
+  answers =
   [
   1, 2, 3,
   1, 2, 3
   ]
-  # answeres.shuffle
-end
-
-def show_board
-  if #any if corret
-    
-  end
-  display_the_board
+  # answers.shuffle
 end
 
 def user_board legend
@@ -67,27 +61,29 @@ def user_board legend
   Hash[legend.zip(board)]
 end
 
-def update_board_if_correct user_board, answeres, pair, legend
-  if answeres[pair.first] == answeres[pair.last]
-  user_board[pair.first] = answeres[pair.first]
-  user_board[pair.last] = answeres[pair.last]
+def update_board_if_correct user_board, answers, pair, legend
+  if answers[pair.first] == answers[pair.last]
+  user_board[pair.first] = answers[pair.first]
+  user_board[pair.last] = answers[pair.last]
   # display_the_board user_board
   end
   user_board
 end
 
-def win
-  if
-
-
+def win? answers, user_board
+  if answers == user_board
+    puts "YAY you won!!"
+    done = true
+  else
+    done = false
   end
+  done
 end
-
 
 def play_again?
   puts "Would you like to play again y or n?"
-  input = gets.chomp
-  if input == "n"
+  again = gets.chomp
+  if again == "n"
     puts "thanks for playing"
     done = true
   end
@@ -97,14 +93,18 @@ user_board = user_board(legend)
 
 puts "Welcome to Memory:"
 
-
-until input == "quit"
-  display_the_board(user_board)
-  display_the_legend(legend)
-  pair = choose_items
-  temp_board = user_board.clone
-  display_temp_board(temp_board, key(legend, answeres), pair, legend)
-  user_board = update_board_if_correct(user_board, key(legend, answeres), pair, legend)
-
-  # play_again?
+display_the_board(user_board)
+loop do
+  until win?(answers, user_board)
+    display_the_legend(legend)
+    pair = choose_items
+    temp_board = user_board.clone
+    display_temp_board(temp_board, key(legend, answers), pair, legend)
+    user_board = update_board_if_correct(user_board, key(legend, answers), pair, legend)
+    break if done == true
+  end
+  again = play_again?
+  break if again == "n"
+  done = false
+  answers = answers.shuffle
 end
