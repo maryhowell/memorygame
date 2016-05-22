@@ -7,7 +7,6 @@ legend = [
 ]
 done = false
 
-
 def display_the_board user_board
   puts
   puts user_board.values_at("a", "b", "c").join " "
@@ -44,26 +43,12 @@ def display_the_legend legend
   puts legend.values_at(3, 4, 5).join " "
 end
 
-# def correct_key? pair
-#   check = false
-#   until check
-#     if ("a" .. "f").include?(pair)
-#       check = true
-#     else pair.length > 1
-#       puts "please try another letter from the Key"
-#       pair = gets.chomp
-#     end
-#   end
-#   pair
-# end
-
-def answers legend
-  correct =
+def answers
+  answers =
   [
   1, 2, 3,
   1, 2, 3
   ]
-  Hash[legend.zip(correct)]
   # answers.shuffle
 end
 
@@ -80,19 +65,19 @@ def update_board_if_correct user_board, answers, pair, legend
   if answers[pair.first] == answers[pair.last]
   user_board[pair.first] = answers[pair.first]
   user_board[pair.last] = answers[pair.last]
+  # display_the_board user_board
   end
   user_board
 end
 
-def win? answers, user_board, legend
-  if user_board(legend) == answers(legend)
+def win? answers, user_board
+  if answers == user_board
     puts "YAY you won!!"
     done = true
   else
     done = false
   end
   done
-  # binding.pry
 end
 
 def play_again?
@@ -110,16 +95,16 @@ puts "Welcome to Memory:"
 
 display_the_board(user_board)
 loop do
-  until win?(answers(legend), user_board, legend)
+  until win?(answers, user_board)
     display_the_legend(legend)
     pair = choose_items
     temp_board = user_board.clone
-    display_temp_board(temp_board, key(legend, answers(legend)), pair, legend)
-    user_board = update_board_if_correct(user_board, key(legend, answers(legend)), pair, legend)
+    display_temp_board(temp_board, key(legend, answers), pair, legend)
+    user_board = update_board_if_correct(user_board, key(legend, answers), pair, legend)
     break if done == true
   end
   again = play_again?
   break if again == "n"
   done = false
-  # answers = answers.shuffle
+  answers = answers.shuffle
 end
