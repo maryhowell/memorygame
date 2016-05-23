@@ -70,16 +70,13 @@ require "pry"
    user_board
  end
 
- def win? answers, user_board
-   user_board.each do |a|
-     if a == "@"
-     done = false
-   else
-     done = true
-      # puts "YAY you won!!"
+ def win? user_board, done
+   user_board.each do |a, b|
+     if  b == "@"
+       return false
    end
-   done
   end
+  return true
  end
 
  def play_again?
@@ -103,11 +100,13 @@ require "pry"
      temp_board = user_board.clone
      display_temp_board(temp_board, key(legend, answers), pair, legend)
      user_board = update_board_if_correct(user_board, key(legend, answers), pair, legend)
-     win?(answers, user_board)
+     done = win?(user_board, done)
+
      break if done == true
    end
+   puts " Yay you won"
    again = play_again?
    break if again == "n"
-   done = false
-   answers = answers.shuffle
+  #  done = false
+  #  answers = answers.shuffle
  end
