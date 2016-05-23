@@ -84,8 +84,8 @@ require "pry"
    again = gets.chomp
    if again == "n"
      puts "thanks for playing"
-     done = true
    end
+     again
  end
 
  user_board = user_board(legend)
@@ -101,12 +101,10 @@ require "pry"
      display_temp_board(temp_board, key(legend, answers), pair, legend)
      user_board = update_board_if_correct(user_board, key(legend, answers), pair, legend)
      done = win?(user_board, done)
-
      break if done == true
    end
    puts " Yay you won"
    again = play_again?
    break if again == "n"
   #  done = false
-  #  answers = answers.shuffle
  end
